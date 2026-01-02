@@ -1,0 +1,23 @@
+{
+  "Navbar": {
+    "home": "Home",
+    "about": "About",
+    "services": "Services",
+    "work": "Work",
+    "contact": "Contact",
+    "email_us": "Email Us",
+    "choose_language": "Choose Language"
+  },
+  "Hero": {
+    "title": "Expert solutions for your",
+    "description": "We transform your architectural visions into enduring realities. From concept to completion, our expertise ensures excellence at every stage of your project.",
+    "services": {
+      "house": "House Construction",
+      "interior": "Interior Design",
+      "renovation": "Renovation",
+      "smart": "Smart Home",
+      "roofing": "Roofing",
+      "landscaping": "Landscaping"
+    }
+  }
+}

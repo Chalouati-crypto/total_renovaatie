@@ -1,0 +1,23 @@
+{
+  "Navbar": {
+    "home": "Accueil",
+    "about": "À Propos",
+    "services": "Services",
+    "work": "Projets",
+    "contact": "Contact",
+    "email_us": "Contactez-nous",
+    "choose_language": "Choisir la langue"
+  },
+  "Hero": {
+    "title": "Solutions d'Experts Pour Votre",
+    "description": "Nous transformons vos visions architecturales en réalités durables. De la conception à la réalisation, notre expertise garantit l'excellence à chaque étape de votre projet.",
+    "services": {
+      "house": "Construction de Maisons",
+      "interior": "Design d'Intérieur",
+      "renovation": "Rénovation",
+      "smart": "Maison Intelligente",
+      "roofing": "Toiture",
+      "landscaping": "Aménagement Paysager"
+    }
+  }
+}
