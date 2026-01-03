@@ -12,6 +12,11 @@ html {
   scroll-behavior: smooth;
 }
 
+@theme {
+  --breakpoint-md: 650px;
+  --breakpoint-lg: 1200px;
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -63,7 +68,7 @@ html {
   --popover-foreground: oklch(0.145 0 0);
   --primary: #3a6f99;
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
+  --secondary: #4aa747;
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);

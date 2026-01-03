@@ -9,6 +9,9 @@ import { useTranslations } from "next-intl";
 
 import Whatsapp from "./icons/whatsapp";
 import LanguageSwitcher from "./language-switcher";
+import MobileMenu from "./mobile-menu";
+import Magnetic from "./magnetic";
+
 export default function Header() {
   const navItems = useMemo(
     () => ["home", "about", "services", "work", "contact"],
@@ -46,7 +49,7 @@ export default function Header() {
   const [activeSection, setActiveSection] = useState("home");
 
   return (
-    <header className="bg-background/80 sticky top-0 z-50 mx-auto flex w-[95vw] items-center border-b border-white/10 backdrop-blur-md">
+    <header className="bg-background/80 sticky top-0 z-50 flex w-full items-center border-b border-white/10 px-[5vw] backdrop-blur-md">
       <Link href={"/"} className="flex-1">
         <Image
           src="/logo.png"
@@ -54,49 +57,57 @@ export default function Header() {
           width={150}
           height={40}
           priority
-          className="h-auto w-30 md:w-37.5"
+          className="w-20 md:w-40"
         />
       </Link>
 
-      <nav className="flex flex-1 items-center justify-center gap-2">
+      <nav className="hidden flex-1 items-center justify-center gap-2 md:flex">
         {navItems.map((item, index) => {
           return (
-            <NavLink
-              key={index}
-              section={t(item)}
-              targetId={item}
-              isActive={activeSection === item}
-            />
+            <Magnetic key={index}>
+              <NavLink
+                section={t(item)}
+                targetId={item}
+                isActive={activeSection === item}
+              />
+            </Magnetic>
           );
         })}
       </nav>
 
-      <div className="flex flex-1 items-center justify-end gap-2">
-        <Button
-          className="hover:bg-primary text-primary border-primary rounded-full border-2 bg-none p-4 px-4 shadow-none hover:text-white"
-          asChild
-          variant="outline"
-        >
-          <a href="mailto:client@example.com?subject=Project Inquiry">
-            <Mail className="mr-2 h-4 w-4" />
-            {t("email_us")}
-          </a>
-        </Button>
-        <Button
-          asChild
-          className="hover:bg-background hover:text-primary hover:border-primary rounded-full px-4 text-white shadow-none hover:border"
-        >
-          <a
-            href="https://wa.me/+32473260030?text=Hello, I am interested in your services."
-            target="_blank"
-            rel="noopener noreferrer"
+      <div className="hidden flex-1 items-center justify-end gap-2 lg:flex">
+        <Magnetic>
+          <Button
+            asChild
+            className="bg-secondary hover:text-secondary hover:border-secondary hover:bg-background rounded-full px-4 text-white shadow-none hover:border"
           >
-            <Whatsapp className="mr-2 h-24 w-24" />
-            +32 473 26 00 30
-          </a>
-        </Button>
+            <a
+              href="https://wa.me/+32473260030?text=Hello, I am interested in your services."
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Whatsapp className="mr-2 h-24 w-24" />
+              +32 473 26 00 30
+            </a>
+          </Button>
+        </Magnetic>
+        <Magnetic>
+          <Button
+            className="bg-primary text-background border-primary rounded-full border-2 bg-none p-4 px-4 shadow-none"
+            asChild
+            variant="outline"
+          >
+            <a href="mailto:client@example.com?subject=Project Inquiry">
+              <Mail className="mr-2 h-4 w-4" />
+              {t("email_us")}
+            </a>
+          </Button>
+        </Magnetic>
+      </div>
+      <div className="ml-4 hidden md:flex">
         <LanguageSwitcher />
       </div>
+      <MobileMenu navItems={navItems} />
     </header>
   );
 }

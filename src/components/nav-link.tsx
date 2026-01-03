@@ -45,7 +45,9 @@ export default function NavLink({ section, targetId, isActive }: NavLinkProps) {
       )}
 
       {/* 2. Wrap the text in a span with z-index to stay above the pill */}
-      <span className="text-l relative z-10 font-semibold">{section}</span>
+      <span className="relative z-10 text-[1rem] font-semibold lg:text-lg">
+        {section}
+      </span>
     </Link>
   );
 }
