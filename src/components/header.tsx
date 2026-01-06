@@ -97,7 +97,10 @@ export default function Header() {
             asChild
             variant="outline"
           >
-            <a href="mailto:client@example.com?subject=Project Inquiry">
+            <a
+              href="mailto:client@example.com?subject=Project Inquiry"
+              className="hover:text-primary"
+            >
               <Mail className="mr-2 h-4 w-4" />
               {t("email_us")}
             </a>

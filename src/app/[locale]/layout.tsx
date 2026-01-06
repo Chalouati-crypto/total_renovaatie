@@ -1,4 +1,5 @@
 import "~/styles/globals.css";
+
 import { geistSans, jetBrainsMono } from "../fonts";
 import Header from "~/components/header";
 import ReactLenis from "lenis/react";

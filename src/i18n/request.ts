@@ -6,8 +6,8 @@ export default getRequestConfig(async ({ requestLocale }) => {
 
   // Fix Error 1: Use type guard instead of 'as any'
   const finalLocale =
-    locale && routing.locales.includes(locale as "en" | "fr")
-      ? (locale as "en" | "fr")
+    locale && routing.locales.includes(locale as "en" | "fr" | "nl")
+      ? (locale as "en" | "fr" | "nl")
       : routing.defaultLocale;
   console.log("final locale", finalLocale);
   return {

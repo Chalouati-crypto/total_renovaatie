@@ -8,7 +8,7 @@ export default function FloatingActions() {
     /* Hidden on mobile (because they are in the burger), 
        Visible on Tablet (flex), 
        Hidden on large Desktop (because they are in the header) */
-    <div className="fixed right-6 bottom-6 z-40 hidden flex-col gap-3 md:flex lg:hidden">
+    <div className="fixed right-6 bottom-6 z-40 flex flex-col gap-3 lg:hidden">
       <Button
         size="icon"
         className="shadow-primary/40 h-14 w-14 rounded-full shadow-2xl"

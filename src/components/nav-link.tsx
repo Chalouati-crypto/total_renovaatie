@@ -26,7 +26,6 @@ export default function NavLink({ section, targetId, isActive }: NavLinkProps) {
     <Link
       onClick={handleClick}
       href={`#${targetId}`}
-      // Remove the bg-primary from the Link itself so it doesn't "jump"
       className={`relative transition-colors duration-300 ${
         isActive ? "bg-primary rounded-full px-4 py-1 text-white" : ""
       }`}

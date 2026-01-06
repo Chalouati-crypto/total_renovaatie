@@ -1,0 +1,78 @@
+{
+  "Navbar": {
+    "home": "Home",
+    "about": "Over ons",
+    "services": "Diensten",
+    "work": "Projecten",
+    "contact": "Contact",
+    "email_us": "E-mail ons",
+    "choose_language": "Taal kiezen"
+  },
+  "Hero": {
+    "title": "Expert oplossingen voor uw",
+    "description": "Wij transformeren uw architecturale visies naar blijvende realiteiten. Van concept tot oplevering, onze expertise garandeert uitmuntendheid in elke fase van uw project.",
+    "services": {
+      "house": "Woningbouw",
+      "interior": "Interieurontwerp",
+      "renovation": "Renovatie",
+      "smart": "Smart Home",
+      "roofing": "Dakwerken",
+      "landscaping": "Tuinaanleg"
+    }
+  },
+  "Services": {
+    "title": "Onze Diensten",
+    "description": "Wij bieden een breed scala aan diensten om uw visie tot leven te brengen.",
+    "categories": {
+      "structural": {
+        "label": "Structureel & Extern",
+        "description": "Duurzame oplossingen voor de schil en structuur van uw gebouw.",
+        "items": [
+          "Vochtbehandeling",
+          "Metselwerk",
+          "Afbraakwerken",
+          "Gevelisolatie",
+          "Veranda's",
+          "Dakwerken"
+        ]
+      },
+      "interior": {
+        "label": "Interieurontwerp",
+        "description": "Uw binnenruimtes transformeren met vakmanschap en modern design.",
+        "items": [
+          "Schilderwerken",
+          "Vloeren",
+          "Verlichting",
+          "Meubilair",
+          "Tegelwerken"
+        ]
+      },
+      "smart": {
+        "label": "Smart Home",
+        "description": "Integratie van geavanceerde technologie voor comfort en veiligheid.",
+        "items": [
+          "Automatisering",
+          "Beveiliging",
+          "Slimme Verlichting",
+          "Klimaatbeheersing"
+        ]
+      },
+      "landscaping": {
+        "label": "Tuinaanleg",
+        "description": "Buitenomgevingen creëren die harmoniëren met uw architectuur.",
+        "items": ["Tuinontwerp", "Bestrating", "Zwembadaanleg", "Omheiningen"]
+      }
+    }
+  },
+
+  "AboutUs": {
+    "title": "Alles onder één dak – Comfort Home Pro",
+    "description": "Droom je van een moderne, energiezuinige woning zonder stress? Bij Comfort Home Pro maken we het waar!\n\nVan totaalrenovaties tot de afwerking in detail — wij zorgen voor kwaliteit, comfort en een zorgeloze uitvoering. Kies voor duurzame PVC en aluminium ramen en deuren, stijlvolle veranda’s, modern sanitair, energiezuinige warmtepompen, vloerverwarming, radiatoren en keukens op maat die perfect bij jouw stijl passen.\n\nWij garanderen duidelijke afspraken, snelle uitvoering en een afwerking tot in de puntjes. Laat jouw woning omtoveren tot een plek waar comfort en design samenkomen.",
+    "usp": {
+      "quality": "Kwaliteit & Comfort",
+      "stress_free": "Zorgeloze Uitvoering",
+      "energy": "Energiezuinig Wonen",
+      "guarantee": "Duidelijke Afspraken"
+    }
+  }
+}

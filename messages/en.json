@@ -19,5 +19,53 @@
       "roofing": "Roofing",
       "landscaping": "Landscaping"
     }
+  },
+  "Services": {
+    "title": "Our Services",
+    "description": "Lorem ipsum dolor sit amet consectetur. Nunc ut condimentum sit libero enim. Diam facilisis.",
+    "categories": {
+      "structural": {
+        "label": "Structural & External",
+        "description": "Lorem ipsum dolor sit amet consectetur. Nunc ut condimentum sit libero enim. Diam facilisis.",
+        "items": [
+          "Humidity Treatment",
+          "Masonry",
+          "Demolition",
+          "Exterior Insulation",
+          "Verandas",
+          "Roofing"
+        ]
+      },
+      "interior": {
+        "label": "Interior Design",
+        "description": "Transforming your indoor spaces with expert craftsmanship and modern design.",
+        "items": ["Painting", "Flooring", "Lighting", "Furniture", "Tiling"]
+      },
+      "smart": {
+        "label": "Smart Home",
+        "description": "Integrating cutting-edge technology for comfort, security, and efficiency.",
+        "items": [
+          "Automation",
+          "Security Systems",
+          "Smart Lighting",
+          "HVAC Control"
+        ]
+      },
+      "landscaping": {
+        "label": "Landscaping",
+        "description": "Creating outdoor environments that harmonize with your architecture.",
+        "items": ["Garden Design", "Paving", "Pool Installation", "Fencing"]
+      }
+    }
+  },
+  "AboutUs": {
+    "title": "Everything Under One Roof – Comfort Home Pro",
+    "description": "Do you dream of a modern, energy-efficient home without the stress? At Comfort Home Pro, we make it happen!\n\nFrom total renovations to detailed finishes — we provide quality, comfort, and a worry-free process. Choose durable PVC and aluminum windows and doors, stylish verandas, modern plumbing, energy-efficient heat pumps, underfloor heating, radiators, and custom kitchens that perfectly match your style.\n\nWe guarantee clear agreements, fast execution, and a flawless finish. Let us transform your home into a place where comfort and design come together.",
+    "usp": {
+      "quality": "Quality & Comfort",
+      "stress_free": "Stress-Free Execution",
+      "energy": "Energy-Efficient Living",
+      "guarantee": "Clear Agreements"
+    }
   }
 }

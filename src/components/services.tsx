@@ -1,7 +1,193 @@
-export default function Services() {
+"use client";
+import { useTranslations } from "next-intl";
+import { useState, useRef } from "react";
+import {
+  motion,
+  AnimatePresence,
+  useScroll,
+  useMotionValueEvent,
+  useSpring,
+  useMotionValue,
+} from "framer-motion";
+import {
+  Boxes,
+  Hammer,
+  Home,
+  LayoutDashboard,
+  type LucideIcon,
+} from "lucide-react";
+
+const ICON_MAP: Record<string, LucideIcon> = {
+  structural: Home,
+  interior: LayoutDashboard,
+  smart: Boxes,
+  landscaping: Hammer,
+};
+
+const categories = ["structural", "interior", "smart", "landscaping"];
+
+export default function ServicesSection() {
+  const t = useTranslations("Services");
+  const [activeTab, setActiveTab] = useState("structural");
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Mouse Tracking Logic
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  // Smooth "Magnetic" Spring Physics
+  const smoothConfig = { damping: 20, stiffness: 150, mass: 0.5 };
+  const springX = useSpring(mouseX, smoothConfig);
+  const springY = useSpring(mouseY, smoothConfig);
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    // clientX/Y are relative to the viewport, which works perfectly with position: fixed
+    mouseX.set(e.clientX);
+    mouseY.set(e.clientY);
+  };
+
+  // Scroll Tracking Logic
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
+  });
+
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    const index = Math.floor(latest * categories.length);
+    const safeIndex = Math.min(index, categories.length - 1);
+    setActiveTab(categories[safeIndex]);
+  });
+
   return (
-    <section id="services" className="min-h-screen text-3xl">
-      services (section in progress)
-    </section>
+    <div id="services" ref={containerRef} className="relative h-[400vh]">
+      {/* 1. FLOATING IMAGE (Fixed to Viewport) */}
+      <AnimatePresence>
+        {hoveredItem && (
+          <motion.div
+            key="hover-image"
+            style={{
+              position: "fixed",
+              left: 0,
+              top: 0,
+              x: springX,
+              y: springY,
+              pointerEvents: "none", // Critical to prevent flickering
+              zIndex: 100,
+            }}
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{
+              opacity: 1,
+              scale: 1,
+              translateX: "10%", // Offset slightly to the right of cursor
+              translateY: "-50%", // Center vertically on cursor
+            }}
+            exit={{ opacity: 0, scale: 0.5 }}
+            className="h-64 w-48 overflow-hidden rounded-xl border-2 border-white/20 bg-gray-200 shadow-2xl"
+          >
+            <img
+              src={`/images/services/${hoveredItem.toLowerCase().replace(/\s+/g, "-")}.jpg`}
+              alt="Service Preview"
+              className="h-full w-full object-cover"
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <section
+        id="services"
+        onMouseMove={handleMouseMove} // Captured on the sticky section
+        className="sticky top-0 flex flex-col justify-center overflow-hidden bg-[#F5F2E8] px-6"
+      >
+        {/* HEADER */}
+        <div className="mb-12 max-w-4xl md:ml-24 lg:ml-48">
+          <h2 className="mb-4 text-2xl font-semibold md:text-3xl lg:text-4xl">
+            {t("title")}
+          </h2>
+          <p className="text-muted-foreground max-w-xl">{t("description")}</p>
+        </div>
+
+        {/* ACTIVE CONTENT */}
+        <div className="flex flex-col items-center text-center">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.4 }}
+              className="w-full max-w-5xl"
+            >
+              <h3 className="text-primary mb-6 font-mono text-3xl underline underline-offset-8">
+                {t(`categories.${activeTab}.label`)}
+              </h3>
+              <p className="mx-auto mb-16 max-w-2xl text-lg">
+                {t(`categories.${activeTab}.description`)}
+              </p>
+
+              {/* SUB-SERVICES GRID */}
+              <div className="grid grid-cols-1 gap-x-24 gap-y-8 text-left md:grid-cols-2">
+                {(t.raw(`categories.${activeTab}.items`) as string[]).map(
+                  (item, index) => {
+                    const isLeft = index % 2 === 0;
+                    return (
+                      <div
+                        key={item}
+                        onMouseEnter={() => setHoveredItem(item)}
+                        onMouseLeave={() => setHoveredItem(null)}
+                        className={`hover:text-primary group cursor-pointer border-b border-black/10 pb-4 text-4xl font-medium tracking-tighter transition-colors ${
+                          isLeft ? "text-left" : "text-left md:text-right"
+                        }`}
+                      >
+                        <span className="inline-block transition-transform duration-300 group-hover:translate-x-2">
+                          {item}
+                        </span>
+                      </div>
+                    );
+                  },
+                )}
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {/* 2. PILL SHAPED DOCK (The "Thing at the bottom") */}
+        <div className="mx-auto mt-12 flex w-fit items-center justify-center gap-2 rounded-full bg-[#E5E4E0] p-1.5 shadow-inner">
+          {categories.map((cat) => {
+            const IconComponent = ICON_MAP[cat];
+            const isActive = activeTab === cat;
+
+            return (
+              <button
+                key={cat}
+                onClick={() => {
+                  const scrollPos =
+                    categories.indexOf(cat) * window.innerHeight;
+                  window.scrollTo({
+                    top: containerRef.current!.offsetTop + scrollPos,
+                    behavior: "smooth",
+                  });
+                }}
+                className="relative flex items-center justify-center rounded-full p-3 transition-all outline-none"
+              >
+                {isActive && (
+                  <motion.div
+                    layoutId="activeServiceTab"
+                    className="bg-primary absolute inset-0 rounded-full"
+                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                  />
+                )}
+                <div
+                  className={`relative z-10 px-2 transition-colors duration-300 ${isActive ? "text-white" : "text-slate-500"}`}
+                >
+                  {IconComponent && <IconComponent size={20} strokeWidth={2} />}
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </section>
+    </div>
   );
 }

@@ -26,6 +26,7 @@ export default function Home() {
   return (
     <section id="home" className="mt-8 min-h-screen">
       <HomeHeading activeIndex={index} />
+
       <ImageGrid activeIndex={index} />
     </section>
   );
