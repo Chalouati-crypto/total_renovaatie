@@ -16,6 +16,7 @@ import {
   LayoutDashboard,
   type LucideIcon,
 } from "lucide-react";
+import Image from "next/image";
 
 const ICON_MAP: Record<string, LucideIcon> = {
   structural: Home,
@@ -66,7 +67,10 @@ export default function ServicesSection() {
     if (isMobile) return;
     const index = Math.floor(latest * categories.length);
     const safeIndex = Math.min(index, categories.length - 1);
-    setActiveTab(categories[safeIndex]);
+    const nextCategory = categories[safeIndex] ?? categories[0];
+    if (nextCategory) {
+      setActiveTab(nextCategory);
+    }
   });
 
   return (
@@ -99,7 +103,10 @@ export default function ServicesSection() {
             exit={{ opacity: 0, scale: 0.5 }}
             className="h-64 w-48 overflow-hidden rounded-xl border-2 border-white/20 bg-gray-200 shadow-2xl"
           >
-            <img
+            <Image
+              fill
+              priority
+              sizes="(max-width: 768px) 100vw, 192px"
               src={`/images/services/${hoveredItem.toLowerCase().replace(/\s+/g, "-")}.jpg`}
               alt="Service Preview"
               className="h-full w-full object-cover"

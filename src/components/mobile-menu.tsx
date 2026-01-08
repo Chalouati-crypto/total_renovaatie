@@ -41,7 +41,7 @@ export default function MobileMenu({ navItems }: MobileMenuProps) {
         delayChildren: 0.2,
       },
     },
-  };
+  } as const;
 
   const itemVariants = {
     closed: { opacity: 0, x: 20 },
@@ -71,7 +71,7 @@ export default function MobileMenu({ navItems }: MobileMenuProps) {
             // 1. Force solid color (e.g., bg-black or bg-white)
             // 2. Force full screen dimensions (h-screen w-screen)
             // 3. Prevent content overflow (flex-col + overflow-y-auto)
-            className="bg-background fixed inset-0 z-[100] flex h-screen w-screen flex-col overflow-y-auto p-8 pt-24 md:hidden"
+            className="bg-background fixed inset-0 z-100 flex h-screen w-screen flex-col overflow-y-auto p-8 pt-24 md:hidden"
           >
             {/* WRAPPER TO ENSURE CONTENT FITS & SCROLLS */}
             <div className="flex flex-col md:hidden">

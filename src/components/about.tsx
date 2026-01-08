@@ -1,6 +1,7 @@
 "use client";
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function AboutSection() {
   const t = useTranslations("AboutUs");
@@ -33,7 +34,9 @@ export default function AboutSection() {
         >
           {/* Replace with your high-end interior or renovation photo */}
           <div className="absolute inset-0 bg-linear-to-tr from-black/20 to-transparent" />
-          <img
+          <Image
+            width={800}
+            height={800}
             src="/images/about-renovation.jpg"
             alt="Luxury Renovation"
             className="h-full w-full object-cover"

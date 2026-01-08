@@ -11,6 +11,7 @@ export default function FloatingActions() {
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
+        if (!entry) return;
         // Updates state based on whether the contact-section is visible
         setIsFooterInView(entry.isIntersecting);
       },

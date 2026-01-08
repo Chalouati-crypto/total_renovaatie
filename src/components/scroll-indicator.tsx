@@ -10,7 +10,7 @@ export default function ScrollIndicator() {
       className="flex flex-col items-center justify-center gap-2"
     >
       {/* Outer Mouse Shell */}
-      <div className="border-primary/40 flex h-10 w-6 justify-center rounded-[12px] border-2">
+      <div className="border-primary/40 flex h-10 w-6 justify-center rounded-2xl border-2">
         {/* Animated Dot */}
         <motion.span
           animate={{
@@ -24,7 +24,7 @@ export default function ScrollIndicator() {
             delay: 0.5, // 0.5s delay before the dot starts moving
             repeatDelay: 0.5, // Optional: adds a pause between each loop
           }}
-          className="from-primary to-primary/60 mt-1.5 block h-2 w-2 rounded-full bg-gradient-to-b"
+          className="from-primary to-primary/60 mt-1.5 block h-2 w-2 rounded-full bg-linear-to-b"
         />
       </div>
     </motion.div>

@@ -10,10 +10,10 @@ const withNextIntl = createNextIntlPlugin();
 /** @type {import("next").NextConfig} */
 const config = {
   eslint: {
-    ignoreDuringBuilds: true,
+    // ignoreDuringBuilds: true,
   },
   typescript: {
-    ignoreBuildErrors: true,
+    // ignoreBuildErrors: true,
   },
   // Add the images configuration here
   images: {
