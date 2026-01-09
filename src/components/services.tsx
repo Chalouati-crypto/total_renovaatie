@@ -47,7 +47,7 @@ export default function ServicesSection({
   };
   const t = useTranslations("Services");
   const [activeTab, setActiveTab] = useState(categorySlugs[0] ?? "structural");
-  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const [hoveredImage, setHoveredImage] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -102,36 +102,49 @@ export default function ServicesSection({
         className={`relative ${isMobile ? "h-auto" : "min-h-[400vh]"} mx-auto max-w-7xl py-24`}
       >
         {/* 1. FLOATING IMAGE (Fixed to Viewport) */}
-        <AnimatePresence>
-          {!isMobile && hoveredItem && (
+        <AnimatePresence mode="popLayout">
+          {!isMobile && hoveredImage && (
             <motion.div
-              key="hover-image"
+              key={hoveredImage}
               style={{
                 position: "fixed",
                 left: 0,
                 top: 0,
                 x: springX,
                 y: springY,
-                pointerEvents: "none", // Critical to prevent flickering
+                pointerEvents: "none",
                 zIndex: 100,
               }}
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{
                 opacity: 1,
                 scale: 1,
-                translateX: "10%", // Offset slightly to the right of cursor
-                translateY: "-50%", // Center vertically on cursor
+                translateX: "10%",
+                translateY: "-50%",
               }}
               exit={{ opacity: 0, scale: 0.5 }}
               className="h-64 w-48 overflow-hidden rounded-xl border-2 border-white/20 bg-gray-200 shadow-2xl"
             >
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200"
+                animate={{
+                  x: ["-100%", "100%"],
+                }}
+                transition={{
+                  repeat: Infinity,
+                  duration: 1.5,
+                  ease: "linear",
+                }}
+                style={{ width: "200%" }}
+              />
               <Image
                 fill
                 priority
-                sizes="(max-width: 768px) 100vw, 192px"
-                src={`/images/services/${hoveredItem.toLowerCase().replace(/\s+/g, "-")}.jpg`}
+                sizes="192px"
+                src={hoveredImage} // Use the direct URL from state
                 alt="Service Preview"
                 className="h-full w-full object-cover"
+                unoptimized={hoveredImage.endsWith(".gif")} // Optional: if you ever use gifs
               />
             </motion.div>
           )}
@@ -216,10 +229,10 @@ export default function ServicesSection({
                           <div
                             key={service.id}
                             onMouseEnter={() =>
-                              !isMobile && setHoveredItem(displayTitle)
-                            }
+                              !isMobile && setHoveredImage(service.imageUrl)
+                            } // Pass the DB URL
                             onMouseLeave={() =>
-                              !isMobile && setHoveredItem(null)
+                              !isMobile && setHoveredImage(null)
                             }
                             className={`group relative cursor-pointer border-b border-black/10 pb-4 text-2xl font-medium tracking-tighter transition-colors md:text-4xl ${
                               isLeft ? "text-left" : "text-left md:text-right"

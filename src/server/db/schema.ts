@@ -1,8 +1,9 @@
 import { relations, sql } from "drizzle-orm";
 import {
+  boolean,
   index,
   integer,
-  pgTableCreator,
+  pgTable,
   serial,
   text,
   timestamp,
@@ -12,10 +13,10 @@ import {
  * T3 Pattern: Prefixes tables to avoid collisions.
  * Result: 'total-renovatie_categories'
  */
-export const createTable = pgTableCreator((name) => `total-renovatie_${name}`);
+// export const pgTable = pgTableCreator((name) => `total-renovatie_${name}`);
 
 // 1. Categories Table (The Filter Tabs)
-export const categories = createTable("categories", {
+export const categories = pgTable("categories", {
   id: serial("id").primaryKey(),
   // Slugs are used as unique IDs for your filter logic (#structural, #finish)
   slug: text("slug").notNull().unique(),
@@ -29,7 +30,7 @@ export const categories = createTable("categories", {
 });
 
 // 2. Services Table (The Masonry Items)
-export const services = createTable(
+export const services = pgTable(
   "services",
   {
     id: serial("id").primaryKey(),
@@ -53,6 +54,22 @@ export const services = createTable(
   }),
 );
 
+export const workImages = pgTable("work_images", {
+  id: serial("id").primaryKey(),
+  url: text("url").notNull(),
+  // We link to the category slug so we can fetch "technical" or "outdoor"
+  categorySlug: text("category_slug").references(() => categories.slug),
+  // Helps with Masonry layouts if you want to store specific aspects
+  aspectRatio: text("aspect_ratio").default("aspect-square"),
+  isFavorite: boolean("is_favorite").default(false).notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+export const workImagesRelations = relations(workImages, ({ one }) => ({
+  category: one(categories, {
+    fields: [workImages.categorySlug],
+    references: [categories.slug],
+  }),
+}));
 /**
  * Drizzle Relations: Allows fetching everything in one clean query.
  */

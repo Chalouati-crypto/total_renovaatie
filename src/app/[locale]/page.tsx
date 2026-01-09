@@ -5,18 +5,20 @@ import FloatingActions from "~/components/floating-actions";
 import Home from "~/components/home";
 import Services from "~/components/services";
 import Work from "~/components/work";
+import { getAllWorkImages } from "~/lib/actions";
 import { getCategoriesWithServices } from "~/lib/data";
 
 export default async function HomePage() {
   const locale = await getLocale(); // This gets 'en', 'fr', or 'nl'
   const categories = await getCategoriesWithServices();
+  const images = await getAllWorkImages();
   return (
     <>
       <Home />
       <About />
 
       <Services data={categories} locale={locale} />
-      <Work locale={locale} data={categories} />
+      <Work locale={locale} data={categories} images={images} />
       <Contact />
       <FloatingActions />
     </>

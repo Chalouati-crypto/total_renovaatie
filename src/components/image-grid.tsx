@@ -14,12 +14,36 @@ interface ImageCardProps {
 }
 export default function ImageGrid({ activeIndex }: { activeIndex: number }) {
   const images = [
-    { src: "/1.jpg", aspect: "aspect-[2/3]", id: 0 },
-    { src: "/3.jpg", aspect: "aspect-[3/4]", id: 1 },
-    { src: "/2.jpg", aspect: "aspect-square", id: 2 },
-    { src: "/5.jpg", aspect: "aspect-square", id: 3 },
-    { src: "/4.jpg", aspect: "aspect-[3/4]", id: 4 },
-    { src: "/6.jpg", aspect: "aspect-[2/3]", id: 5 },
+    {
+      src: "https://sd6ugp3ku1.ufs.sh/f/t1VDZOLw8OY6nliR93st8EQZXDyq3KA9uLG7ndMv04Tp2Jmi",
+      aspect: "aspect-[2/3]",
+      id: 0,
+    },
+    {
+      src: "https://sd6ugp3ku1.ufs.sh/f/t1VDZOLw8OY6G7qgRwrjZ2suCdfWwBXS1xNtv05kpmyai6DY",
+      aspect: "aspect-[3/4]",
+      id: 1,
+    },
+    {
+      src: "https://sd6ugp3ku1.ufs.sh/f/t1VDZOLw8OY6vHwfDliCq0Vg8SRhZr6uz43s2Undaw5ODoQI",
+      aspect: "aspect-square",
+      id: 2,
+    },
+    {
+      src: "https://sd6ugp3ku1.ufs.sh/f/t1VDZOLw8OY6b4Pn7rl0pCVkLh6Hxli4o7FyP0TW1BKrwDf3",
+      aspect: "aspect-square",
+      id: 3,
+    },
+    {
+      src: "https://sd6ugp3ku1.ufs.sh/f/t1VDZOLw8OY6iQUV7ScfB35JR6ZbrHo2xmvkaXgyNeSA9tpd",
+      aspect: "aspect-[3/4]",
+      id: 4,
+    },
+    {
+      src: "https://sd6ugp3ku1.ufs.sh/f/t1VDZOLw8OY63bdzXNPJLkgytebRNSAaCnZ2EXxd0HT7wOhI",
+      aspect: "aspect-[2/3]",
+      id: 5,
+    },
   ];
 
   return (
@@ -71,7 +95,7 @@ function ImageCard({ img, activeIndex }: ImageCardProps) {
         alt="Project detail"
         fill
         // priority helps with Largest Contentful Paint for the first images
-        priority={img.id <= 1}
+        priority
         className="object-cover"
         sizes="(max-width: 768px) 33vw, 20vw"
       />

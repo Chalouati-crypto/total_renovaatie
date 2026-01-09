@@ -28,6 +28,11 @@ const config = {
         hostname: "utfs.io", // Pre-configuring for UploadThing
         pathname: "**",
       },
+      {
+        protocol: "https",
+        hostname: "*.ufs.sh", // This allows all UploadThing subdomains
+        pathname: "**",
+      },
     ],
   },
 };
