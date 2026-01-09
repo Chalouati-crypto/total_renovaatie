@@ -35,7 +35,7 @@ export default function Contact() {
 
             {/* WhatsApp Button */}
             <Link
-              href="https://wa.me/32473200030"
+              href="https://wa.me/32473200030?text=Hello, I am interested in your services."
               target="_blank"
               className="flex items-center gap-3 rounded-full bg-[#51B14E] px-8 py-4 font-medium text-white transition-transform hover:scale-105 active:scale-95"
             >
