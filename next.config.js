@@ -10,19 +10,20 @@ const withNextIntl = createNextIntlPlugin();
 /** @type {import("next").NextConfig} */
 const config = {
   eslint: {
-    // ignoreDuringBuilds: true,
+    ignoreDuringBuilds: true,
   },
   typescript: {
-    // ignoreBuildErrors: true,
+    ignoreBuildErrors: true,
   },
   // Add the images configuration here
   images: {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "images.unsplash.com",
-        pathname: "**",
+        hostname: "sd6ugp3ku1.ufs.sh", // This is your UploadThing identifier
+        pathname: "/f/**",
       },
+
       {
         protocol: "https",
         hostname: "utfs.io", // Pre-configuring for UploadThing

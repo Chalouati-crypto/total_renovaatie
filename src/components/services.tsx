@@ -1,4 +1,5 @@
 "use client";
+
 import { useTranslations } from "next-intl";
 import { useState, useRef, useEffect } from "react";
 import {
@@ -17,14 +18,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import Image from "next/image";
-import type { CategoryWithServices, Service } from "~/server/db/types";
-
-const ICON_MAP: Record<string, LucideIcon> = {
-  structural: Home,
-  interior: LayoutDashboard,
-  smart: Boxes,
-  landscaping: Hammer,
-};
+import type { CategoryWithServices } from "~/server/db/types";
 
 export default function ServicesSection({
   data,
@@ -34,35 +28,25 @@ export default function ServicesSection({
   locale: string;
 }) {
   const categorySlugs = data.map((cat) => cat.slug);
-
-  // 2. Updated Icon Map (Fallback to Home if slug doesn't match)
-  const getIcon = (slug: string) => {
-    const map: Record<string, LucideIcon> = {
-      structural: Home,
-      finishing: LayoutDashboard,
-      technical: Boxes,
-      outdoor: Hammer,
-    };
-    return map[slug] ?? Home;
-  };
   const t = useTranslations("Services");
+
   const [activeTab, setActiveTab] = useState(categorySlugs[0] ?? "structural");
   const [hoveredImage, setHoveredImage] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Mouse Tracking Logic
+  // 1. Mouse Tracking Logic using Motion Values
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  // Smooth "Magnetic" Spring Physics
-  const smoothConfig = { damping: 20, stiffness: 150, mass: 0.5 };
+  // Smooth Spring Physics for the floating image
+  const smoothConfig = { damping: 25, stiffness: 200, mass: 0.5 };
   const springX = useSpring(mouseX, smoothConfig);
   const springY = useSpring(mouseY, smoothConfig);
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (isMobile) return;
-    // clientX/Y are relative to the viewport, which works perfectly with position: fixed
+    // Set coordinates relative to viewport
     mouseX.set(e.clientX);
     mouseY.set(e.clientY);
   };
@@ -74,7 +58,18 @@ export default function ServicesSection({
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Scroll Tracking Logic
+  // 2. Icon Helper
+  const getIcon = (slug: string) => {
+    const map: Record<string, LucideIcon> = {
+      structural: Home,
+      finishing: LayoutDashboard,
+      technical: Boxes,
+      outdoor: Hammer,
+    };
+    return map[slug] ?? Home;
+  };
+
+  // 3. Scroll Tracking Logic for auto-switching tabs
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
@@ -82,11 +77,7 @@ export default function ServicesSection({
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     if (isMobile) return;
-
-    // Use a slight offset (0.05) or use Math.round for a "center-based" switch
-    // instead of Math.floor which switches the moment you touch the boundary.
     const index = Math.round(latest * (categorySlugs.length - 1));
-
     const safeIndex = Math.max(0, Math.min(index, categorySlugs.length - 1));
     const nextCategory = categorySlugs[safeIndex];
 
@@ -96,155 +87,136 @@ export default function ServicesSection({
   });
 
   return (
-    <div id="services" className="px-6 pt-12 md:px-12 lg:pt-8">
+    <div id="services" className="overflow-visible px-6 pt-12 md:px-12 lg:pt-8">
       <div
         ref={containerRef}
         className={`relative ${isMobile ? "h-auto" : "min-h-[400vh]"} mx-auto max-w-7xl py-24`}
       >
-        {/* 1. FLOATING IMAGE (Fixed to Viewport) */}
-        <AnimatePresence mode="popLayout">
-          {!isMobile && hoveredImage && (
+        {/* FLOATING IMAGE (Follows Spring Values) */}
+        <AnimatePresence>
+          {hoveredImage && !isMobile && (
             <motion.div
-              key={hoveredImage}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              className="pointer-events-none fixed z-[9999] h-80 w-64 overflow-hidden rounded-xl border-4 border-white shadow-2xl"
               style={{
-                position: "fixed",
-                left: 0,
-                top: 0,
-                x: springX,
-                y: springY,
-                pointerEvents: "none",
-                zIndex: 100,
+                left: springX,
+                top: springY,
+                x: 25, // Offset from cursor
+                y: 25,
               }}
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{
-                opacity: 1,
-                scale: 1,
-                translateX: "10%",
-                translateY: "-50%",
-              }}
-              exit={{ opacity: 0, scale: 0.5 }}
-              className="h-64 w-48 overflow-hidden rounded-xl border-2 border-white/20 bg-gray-200 shadow-2xl"
             >
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200"
-                animate={{
-                  x: ["-100%", "100%"],
-                }}
-                transition={{
-                  repeat: Infinity,
-                  duration: 1.5,
-                  ease: "linear",
-                }}
-                style={{ width: "200%" }}
-              />
               <Image
-                fill
-                priority
-                sizes="192px"
-                src={hoveredImage} // Use the direct URL from state
+                src={hoveredImage}
                 alt="Service Preview"
-                className="h-full w-full object-cover"
-                unoptimized={hoveredImage.endsWith(".gif")} // Optional: if you ever use gifs
+                fill
+                unoptimized={true} // Bypasses local /api/media/ path issues
+                className="object-cover"
               />
             </motion.div>
           )}
         </AnimatePresence>
 
         <section
-          id="services"
-          onMouseMove={handleMouseMove} // Captured on the sticky section
+          onMouseMove={handleMouseMove}
           className={`${
             isMobile
               ? "relative py-12"
-              : "sticky top-0 flex min-h-screen flex-col justify-between py-12" // min-h instead of h
-          } overflow-hidden`}
+              : "sticky top-0 flex min-h-screen flex-col justify-between py-24"
+          }`}
         >
           {/* HEADER */}
           <div className="mb-12 flex max-w-4xl flex-col items-center justify-center text-center md:items-start md:justify-start md:text-left">
-            <h2 className="text-5xl leading-[1.1] font-bold tracking-tight md:text-6xl">
+            <h2 className="text-5xl leading-[1.1] font-bold tracking-tight text-slate-900 md:text-6xl">
               {t("title")}
             </h2>
-            <p className="text-muted-foreground max-w-xl">{t("description")}</p>
+            <p className="text-muted-foreground mt-4 max-w-xl text-lg">
+              {t("description")}
+            </p>
           </div>
 
           {/* ACTIVE CONTENT */}
-          <div className="flex min-h-125 flex-col items-center text-center">
+          <div className="flex flex-1 flex-col items-center justify-center text-center">
             <AnimatePresence mode="wait">
-              {/* 1. Find the current active category from your DB data */}
               {(() => {
                 const currentCategory = data.find(
                   (cat) => cat.slug === activeTab,
                 );
-
-                // Fallback if data hasn't loaded or slug doesn't match
                 if (!currentCategory) return null;
-
-                // Localization helper for Category and Service
-                const getLabel = (
-                  item: CategoryWithServices | Service,
-                ): string => {
-                  if (locale === "fr") {
-                    // We use a type guard or 'in' check to see if it's a Category or Service
-                    return (
-                      ("nameFr" in item ? item.nameFr : item.titleFr) ?? ""
-                    );
-                  }
-                  if (locale === "nl") {
-                    return (
-                      ("nameNl" in item ? item.nameNl : item.titleNl) ?? ""
-                    );
-                  }
-                  // Default to English
-                  return ("nameEn" in item ? item.nameEn : item.titleEn) ?? "";
-                };
 
                 return (
                   <motion.div
                     key={activeTab}
-                    layout
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    transition={{ duration: 0.4, layout: { duration: 0.3 } }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.4 }}
                     className="w-full max-w-5xl"
                   >
-                    {/* 2. Dynamic Title from DB */}
-                    <h3 className="text-primary mb-6 font-mono text-3xl underline underline-offset-8">
-                      {getLabel(currentCategory)}
+                    <h3 className="text-primary mb-12 font-mono text-3xl font-bold tracking-widest uppercase">
+                      {currentCategory.name}
                     </h3>
 
-                    {/* 3. Description still comes from JSON since it's "Static Marketing Copy" 
-              (Optional: You can move this to DB too if you add a description column) */}
-                    <p className="mx-auto mb-16 max-w-2xl text-lg">
-                      {t(`description`)}
-                    </p>
-
-                    {/* 4. SUB-SERVICES GRID - Now mapping through currentCategory.services */}
-                    <div className="grid grid-cols-1 gap-x-24 gap-y-8 text-left md:grid-cols-2">
+                    <div className="grid grid-cols-1 gap-x-16 gap-y-6 text-left md:grid-cols-2">
                       {currentCategory.services.map((service, index) => {
                         const isLeft = index % 2 === 0;
-                        const displayTitle = getLabel(service);
+
+                        // 1. IMPROVED IMAGE LOGIC
+                        const serviceImg = service.image;
+                        let serviceImageUrl = "";
+
+                        if (
+                          typeof serviceImg === "object" &&
+                          serviceImg !== null
+                        ) {
+                          const media = serviceImg;
+
+                          // 1. Check for the absolute URL (The most reliable for UploadThing)
+                          if (media.url && media.url.startsWith("http")) {
+                            serviceImageUrl = media.url;
+                          }
+                          // 2. Check for the fileKey (If it actually matches the UT key)
+                          else if (
+                            media.fileKey &&
+                            !media.fileKey.includes(" ")
+                          ) {
+                            serviceImageUrl = `https://sd6ugp3ku1.ufs.sh/f/${media.fileKey}`;
+                          }
+                          // 3. Fallback to the standard filename construction
+                          else if (media.filename) {
+                            serviceImageUrl = `https://sd6ugp3ku1.ufs.sh/f/${media.filename}`;
+                          }
+                        }
+
+                        console.log("Final Hover URL:", serviceImageUrl);
 
                         return (
                           <div
                             key={service.id}
-                            onMouseEnter={() =>
-                              !isMobile && setHoveredImage(service.imageUrl)
-                            } // Pass the DB URL
+                            onMouseEnter={() => {
+                              if (!isMobile && serviceImageUrl) {
+                                console.log("FULL MEDIA DATA:", service.image);
+                                setHoveredImage(serviceImageUrl);
+                              }
+                            }}
                             onMouseLeave={() =>
                               !isMobile && setHoveredImage(null)
                             }
-                            className={`group relative cursor-pointer border-b border-black/10 pb-4 text-2xl font-medium tracking-tighter transition-colors md:text-4xl ${
+                            className={`group relative cursor-pointer border-b border-black/10 pb-6 transition-all ${
                               isLeft ? "text-left" : "text-left md:text-right"
-                            } after:bg-primary after:absolute after:bottom-0 after:h-0.5 after:w-0 after:transition-all after:duration-500 after:content-[''] hover:after:w-full ${
-                              isLeft
-                                ? "after:left-0"
-                                : "after:left-0 md:after:right-0 md:after:left-auto"
                             }`}
                           >
-                            <span className="inline-block transition-transform duration-300 md:group-hover:translate-x-2">
-                              {displayTitle}
+                            <span className="relative z-10 block text-2xl font-medium tracking-tighter transition-transform duration-300 group-hover:translate-x-2 md:text-4xl md:group-hover:translate-x-4">
+                              {service.title}
                             </span>
+                            <div
+                              className={`bg-primary absolute bottom-0 h-[2px] w-0 transition-all duration-500 group-hover:w-full ${
+                                isLeft
+                                  ? "left-0"
+                                  : "left-0 md:right-0 md:left-auto"
+                              }`}
+                            />
                           </div>
                         );
                       })}
@@ -255,8 +227,8 @@ export default function ServicesSection({
             </AnimatePresence>
           </div>
 
-          {/* 2. PILL SHAPED DOCK (The "Thing at the bottom") */}
-          <div className="mx-auto mt-12 flex w-fit items-center justify-center gap-2 rounded-full bg-[#E5E4E0] p-1.5 shadow-inner md:mt-0">
+          {/* PILL DOCK NAVIGATION */}
+          <div className="mx-auto mt-16 flex w-fit items-center justify-center gap-2 rounded-full border border-black/5 bg-white/80 p-2 shadow-xl backdrop-blur-md">
             {data.map((category) => {
               const IconComponent = getIcon(category.slug);
               const isActive = activeTab === category.slug;
@@ -265,18 +237,14 @@ export default function ServicesSection({
                 <button
                   key={category.id}
                   onClick={() => {
-                    if (isMobile) {
-                      setActiveTab(category.slug);
-                    } else {
-                      const index = categorySlugs.indexOf(category.slug);
-                      const scrollPos = index * window.innerHeight;
-                      window.scrollTo({
-                        top: containerRef.current!.offsetTop + scrollPos,
-                        behavior: "smooth",
-                      });
-                    }
+                    const index = categorySlugs.indexOf(category.slug);
+                    const scrollPos = index * window.innerHeight;
+                    window.scrollTo({
+                      top: containerRef.current!.offsetTop + scrollPos,
+                      behavior: "smooth",
+                    });
                   }}
-                  className="relative flex items-center justify-center rounded-full p-3 transition-all outline-none"
+                  className="relative flex items-center justify-center rounded-full p-4 transition-all"
                 >
                   {isActive && (
                     <motion.div
@@ -290,9 +258,9 @@ export default function ServicesSection({
                     />
                   )}
                   <div
-                    className={`relative z-10 px-2 transition-colors duration-300 ${isActive ? "text-white" : "text-slate-500"}`}
+                    className={`relative z-10 transition-colors duration-300 ${isActive ? "text-white" : "text-slate-400"}`}
                   >
-                    <IconComponent size={20} strokeWidth={2} />
+                    <IconComponent size={22} />
                   </div>
                 </button>
               );

@@ -290,7 +290,6 @@ async function main() {
   await db.insert(workImages).values(structuralData);
 
   const technicalImages = [
-    // --- 10 FAVORITES ---
     {
       url: "https://sd6ugp3ku1.ufs.sh/f/t1VDZOLw8OY6rNELPBMETXAJhto4C5MPSHkKf8nqdQwZ2LrN",
       isFavorite: true,
@@ -380,7 +379,6 @@ async function main() {
   console.log("✅ Technical images seeded");
 
   const finishingImages = [
-    // --- 10 FAVORITES (Primary Grid) ---
     {
       url: "https://sd6ugp3ku1.ufs.sh/f/t1VDZOLw8OY6w4AeE4ZOxhfYv1pul6BmgnH4ZtdKD2Ibq8wT",
       isFavorite: true,

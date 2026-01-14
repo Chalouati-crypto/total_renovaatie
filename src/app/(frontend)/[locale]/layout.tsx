@@ -1,12 +1,12 @@
 import "~/styles/globals.css";
 
-import { geistSans, jetBrainsMono } from "../fonts";
+import { geistSans, jetBrainsMono } from "../../fonts";
 import Header from "~/components/header";
 import ReactLenis from "lenis/react";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
-import { routing } from "../../i18n/routing";
+import { routing } from "~/i18n/routing";
 
 export default async function RootLayout({
   children,
@@ -30,9 +30,7 @@ export default async function RootLayout({
 
   // 2. Fetch messages on the server
   const messages = await getMessages();
-  // DEBUG: Check your terminal (not browser console)
-  console.log("CURRENT LOCALE:", locale);
-  console.log("NAVBAR DATA:", messages.Navbar);
+
   return (
     <html
       lang={locale}
