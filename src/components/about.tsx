@@ -1,5 +1,4 @@
 "use client";
-import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import LogoImage from "../../public/logo.png";
@@ -10,8 +9,6 @@ export default function AboutSection({
 }: {
   initialData: SiteSetting;
 }) {
-  const t = useTranslations("AboutUs");
-
   const { data } = useLivePreview({
     initialData,
     serverURL: process.env.NEXT_PUBLIC_SERVER_URL ?? "http://localhost:3000",

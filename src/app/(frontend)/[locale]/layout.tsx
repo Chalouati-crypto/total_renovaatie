@@ -3,11 +3,10 @@ import "~/styles/globals.css";
 import { geistSans, jetBrainsMono } from "../../fonts";
 import Header from "~/components/header";
 import ReactLenis from "lenis/react";
-import { NextIntlClientProvider } from "next-intl";
-import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "~/i18n/routing";
-
+import { getPayload } from "payload";
+import configPromise from "~/payload.config";
 export default async function RootLayout({
   children,
   params,
@@ -27,23 +26,46 @@ export default async function RootLayout({
   if (!isValidLocale) {
     notFound();
   }
-
+  const payload = await getPayload({ config: configPromise });
+  const siteSettings = await payload.findGlobal({
+    slug: "site-settings",
+    locale: locale,
+    // Add caching to make this instant after the first load
+    next: { revalidate: 3600 },
+  });
   // 2. Fetch messages on the server
-  const messages = await getMessages();
 
   return (
     <html
       lang={locale}
       className={`${geistSans.className} ${jetBrainsMono.variable}`}
     >
+      <head>
+        {/* 1. Preconnect to your Media Domain */}
+        {/* This starts the handshake with Vercel Blob immediately */}
+        <link
+          rel="preconnect"
+          href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com"
+          crossOrigin="anonymous"
+        />
+      </head>
       <body>
         {/* NextIntlClientProvider MUST wrap Header to fix your error */}
-        <NextIntlClientProvider messages={messages} locale={locale}>
-          <ReactLenis root>
-            <Header />
-            <main>{children}</main>
-          </ReactLenis>
-        </NextIntlClientProvider>
+        <ReactLenis root>
+          <Header
+            labels={{
+              email_us: siteSettings.emailButtonText || "Email Us",
+              whatsapp: siteSettings.whatsappButtonText || "WhatsApp",
+              // You can add nav labels to Payload or hardcode them here for now
+              home: locale === "nl" ? "Home" : "Home",
+              about: locale === "nl" ? "Over ons" : "About",
+              services: locale === "nl" ? "Diensten" : "Services",
+              work: locale === "nl" ? "Projecten" : "Work",
+              contact: locale === "nl" ? "Contact" : "Contact",
+            }}
+          />
+          <main>{children}</main>
+        </ReactLenis>
       </body>
     </html>
   );

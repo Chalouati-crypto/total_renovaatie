@@ -8,7 +8,6 @@ interface Props {
 }
 
 export default function HomeHeading({ activeIndex, title, services }: Props) {
-  // 1. Changed "hero" to "Hero" to match your JSON key
   const currentService = services?.[activeIndex]?.text ?? "";
   return (
     <h1 className="text-center font-sans text-3xl leading-tight font-bold md:text-5xl">
@@ -16,7 +15,7 @@ export default function HomeHeading({ activeIndex, title, services }: Props) {
       <br />
       {/* Added border-b-4 and min-width to prevent layout jumping */}
       <span className="text-primary border-primary relative inline-block min-w-[320px] font-mono">
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="wait" initial={false}>
           <motion.span
             key={activeIndex}
             initial={{ opacity: 0, y: 15 }}

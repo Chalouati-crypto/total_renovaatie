@@ -2,8 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "~/i18n/routing";
-import { useTranslations } from "next-intl";
+// 1. Remove Link from next-intl, use standard a tags for hash links
 import { Mail, X, Menu } from "lucide-react";
 import { Button } from "./ui/button";
 import Whatsapp from "./icons/whatsapp";
@@ -11,11 +10,11 @@ import LanguageSwitcher from "./language-switcher";
 
 interface MobileMenuProps {
   navItems: string[];
+  labels: Record<string, string>; // 2. Add labels prop
 }
 
-export default function MobileMenu({ navItems }: MobileMenuProps) {
+export default function MobileMenu({ navItems, labels }: MobileMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const t = useTranslations("Navbar");
 
   // Prevent background scroll when menu is open
   useEffect(() => {
@@ -28,7 +27,7 @@ export default function MobileMenu({ navItems }: MobileMenuProps) {
 
   const menuVariants = {
     closed: {
-      x: 100,
+      x: "100%", // Cleaner transition
       transition: { type: "spring", stiffness: 300, damping: 30 },
     },
     open: {
@@ -50,17 +49,15 @@ export default function MobileMenu({ navItems }: MobileMenuProps) {
 
   return (
     <>
-      {/* TRIGGER BUTTON */}
       <Button
         variant="ghost"
         size="icon"
-        className="relative z-110 md:hidden"
+        className="relative z-[110] md:hidden"
         onClick={() => setIsOpen(!isOpen)}
       >
         {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
       </Button>
 
-      {/* FULL SCREEN OPAQUE OVERLAY */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -68,35 +65,31 @@ export default function MobileMenu({ navItems }: MobileMenuProps) {
             initial="closed"
             animate="open"
             exit="closed"
-            // 1. Force solid color (e.g., bg-black or bg-white)
-            // 2. Force full screen dimensions (h-screen w-screen)
-            // 3. Prevent content overflow (flex-col + overflow-y-auto)
-            className="bg-background fixed inset-0 z-100 flex h-screen w-screen flex-col overflow-y-auto p-8 pt-24 md:hidden"
+            className="bg-background fixed inset-0 z-[100] flex h-screen w-screen flex-col overflow-y-auto p-8 pt-24 md:hidden"
           >
-            {/* WRAPPER TO ENSURE CONTENT FITS & SCROLLS */}
             <div className="flex flex-col md:hidden">
-              {/* NAV LINKS */}
-              <div className="mb-4 flex items-center justify-between text-white">
+              <div className="mb-4 flex items-center justify-between">
                 <span className="text-sm font-medium tracking-widest text-slate-400 uppercase">
-                  Language
+                  {labels.language ?? "Language"}
                 </span>
-                <LanguageSwitcher />
+                {/* 3. Pass label to LanguageSwitcher if needed */}
+                <LanguageSwitcher label={labels.choose_language} />
               </div>
               <nav className="flex flex-col gap-6 border-b border-white/10 pb-4">
                 {navItems.map((item) => (
                   <motion.div key={item} variants={itemVariants}>
-                    <Link
+                    <a
                       href={`#${item}`}
                       onClick={() => setIsOpen(false)}
                       className="hover:text-primary text-4xl font-bold tracking-tight"
                     >
-                      {t(item)}
-                    </Link>
+                      {/* 4. Use labels prop instead of t() */}
+                      {labels[item] ?? item}
+                    </a>
                   </motion.div>
                 ))}
               </nav>
 
-              {/* BOTTOM SECTION (CTAs) */}
               <motion.div
                 variants={itemVariants}
                 className="flex flex-col gap-4 pt-10 pb-10"
@@ -106,7 +99,7 @@ export default function MobileMenu({ navItems }: MobileMenuProps) {
                   className="bg-primary justify-between rounded-2xl py-7 text-lg text-white"
                 >
                   <a href="mailto:contact@example.com">
-                    {t("email_us")}
+                    {labels.email_us}
                     <Mail size={20} />
                   </a>
                 </Button>
@@ -117,7 +110,7 @@ export default function MobileMenu({ navItems }: MobileMenuProps) {
                   className="bg-secondary justify-between rounded-2xl border-2 border-white/20 py-7 text-lg text-white"
                 >
                   <a href="https://wa.me/32473260030">
-                    WhatsApp
+                    {labels.whatsapp ?? "WhatsApp"}
                     <Whatsapp className="h-6 w-6 fill-current" />
                   </a>
                 </Button>

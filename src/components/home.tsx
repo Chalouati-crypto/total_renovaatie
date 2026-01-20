@@ -14,13 +14,14 @@ export default function Home({ initialData }: { initialData: SiteSetting }) {
   const [index, setIndex] = useState(0);
   const services = data?.rotatingServices ?? [];
   const totalItems = services.length > 0 ? services.length : 6;
+  // home.tsx
   useEffect(() => {
-    if (index >= totalItems - 1) return;
+    if (totalItems <= 1) return;
 
     const timer = setInterval(() => {
       setIndex((prev) => {
         if (prev >= totalItems - 1) {
-          clearInterval(timer);
+          clearInterval(timer); // Stop at the end
           return prev;
         }
         return prev + 1;
@@ -28,7 +29,7 @@ export default function Home({ initialData }: { initialData: SiteSetting }) {
     }, 1500);
 
     return () => clearInterval(timer);
-  }, [index, totalItems]);
+  }, [totalItems]); // 👈 Removed 'index' from dependencies
 
   return (
     <section id="home" className="mt-8 min-h-screen">

@@ -61,7 +61,7 @@ export default function Contact({
             </p>
 
             <div className="flex flex-wrap justify-center gap-6 text-sm font-medium text-slate-600">
-              <LegalModal triggerText={settings.address} />
+              <LegalModal settings={settings} set />
             </div>
           </div>
         </div>

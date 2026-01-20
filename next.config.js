@@ -19,6 +19,12 @@ const config = {
   images: {
     remotePatterns: [
       {
+        protocol: "https",
+        hostname: "flagcdn.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
         protocol: "http",
         hostname: "localhost",
         port: "3000",

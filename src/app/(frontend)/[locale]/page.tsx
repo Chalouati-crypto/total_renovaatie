@@ -18,9 +18,12 @@ export default async function HomePage() {
     slug: "site-settings",
     locale: locale, // This ensures we get EN, FR, or NL content
     depth: 2,
+    next: {
+      revalidate: 10800, // Cache for 3 hours
+      tags: ["settings"],
+    },
   });
   const images = await getAllWorkImages();
-  console.log("these are the images", images);
   return (
     <>
       <Home initialData={siteSettings} />

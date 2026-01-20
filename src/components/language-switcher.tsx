@@ -9,27 +9,31 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Languages } from "lucide-react";
-import { useParams } from "next/navigation";
-import { usePathname, useRouter } from "~/i18n/routing";
-import { useTranslations } from "next-intl";
+import { useParams, usePathname, useRouter } from "next/navigation";
+import Image from "next/image";
+
 const locales = [
-  { code: "en", label: "English", country: "gb" }, // 'gb' for the flag
+  { code: "en", label: "English", country: "gb" },
   { code: "fr", label: "Français", country: "fr" },
   { code: "nl", label: "Nederlands", country: "nl" },
 ] as const;
-export default function LanguageSwitcher() {
-  const t = useTranslations("Navbar");
+
+export default function LanguageSwitcher({
+  label = "Language",
+}: {
+  label?: string;
+}) {
   const router = useRouter();
   const pathname = usePathname();
   const params = useParams();
-  const handleLanguageChange = (nextLocale: "en" | "fr" | "nl") => {
-    // We use replace to swap the locale while preserving the rest of the URL state
-    router.replace(
-      // @ts-expect-error - The routing types sometimes conflict with the dynamic params object in Next.js 15
-      { pathname, params },
-      { locale: nextLocale },
-    );
+
+  const handleLanguageChange = (nextLocale: string) => {
+    // Standard Next.js way to swap locale in the URL
+    // This regex replaces the first segment (the locale) with the new one
+    const newPath = pathname.replace(`/${params.locale}`, `/${nextLocale}`);
+    router.push(newPath);
   };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="bg-primary cursor-pointer rounded-full p-2 outline-none">
@@ -37,7 +41,7 @@ export default function LanguageSwitcher() {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="end" className="w-40">
-        <DropdownMenuLabel>{t("choose_language")}</DropdownMenuLabel>
+        <DropdownMenuLabel>{label}</DropdownMenuLabel>
         <DropdownMenuSeparator />
 
         {locales.map((locale) => (
@@ -46,10 +50,11 @@ export default function LanguageSwitcher() {
             onClick={() => handleLanguageChange(locale.code)}
             className="flex cursor-pointer items-center gap-3 py-2"
           >
-            {/* Using FlagCDN - clean and fast */}
-            <img
+            <Image
               src={`https://flagcdn.com/w40/${locale.country}.png`}
               alt={locale.label}
+              width={20}
+              height={10}
               className="h-auto w-5 rounded-[2px] border border-slate-200 object-cover"
             />
             <span className="font-medium">{locale.code.toUpperCase()}</span>

@@ -11,8 +11,6 @@ export default function ImageGrid({
   activeIndex: number;
   heroImages: SiteSetting["heroImages"];
 }) {
-  console.log("these are the hero images", heroImages);
-
   if (!heroImages || heroImages.length === 0) return null;
 
   return (
@@ -82,7 +80,7 @@ function ImageCard({
           src={src}
           alt={item?.image?.alt || "Project detail"}
           fill
-          unoptimized
+          priority
           className="object-cover"
           sizes="(max-width: 768px) 33vw, 20vw"
         />

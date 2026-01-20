@@ -1,6 +1,5 @@
 "use client";
 
-import { useTranslations } from "next-intl";
 import { useState, useRef, useEffect } from "react";
 import {
   motion,
@@ -24,7 +23,6 @@ export default function ServicesSection({
   settings: SiteSetting;
 }) {
   const categorySlugs = data.map((cat) => cat.slug);
-  const t = useTranslations("Services");
   const [isImageLoading, setIsImageLoading] = useState(true);
   const [activeTab, setActiveTab] = useState(categorySlugs[0] ?? "structural");
   const [hoveredImage, setHoveredImage] = useState<string | null>(null);
@@ -36,7 +34,7 @@ export default function ServicesSection({
   const mouseY = useMotionValue(0);
 
   // Smooth Spring Physics for the floating image
-  const smoothConfig = { damping: 25, stiffness: 200, mass: 0.5 };
+  const smoothConfig = { damping: 30, stiffness: 300, mass: 0.4 };
   const springX = useSpring(mouseX, smoothConfig);
   const springY = useSpring(mouseY, smoothConfig);
 
@@ -46,9 +44,7 @@ export default function ServicesSection({
     mouseX.set(e.clientX);
     mouseY.set(e.clientY);
   };
-  useEffect(() => {
-    setIsImageLoading(true);
-  }, [hoveredImage]);
+
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
@@ -125,8 +121,8 @@ export default function ServicesSection({
                 src={hoveredImage}
                 alt="Service Preview"
                 fill
-                unoptimized={true} // Bypasses local /api/media/ path issues
                 className="object-cover"
+                onLoad={() => setIsImageLoading(false)} // 👈 Handle it here
               />
             </motion.div>
           )}
@@ -171,7 +167,14 @@ export default function ServicesSection({
                     <h3 className="text-primary mb-12 font-mono text-3xl font-bold tracking-widest uppercase">
                       {currentCategory.name}
                     </h3>
-
+                    <div className="sr-only" aria-hidden="true">
+                      {currentCategory.services.map((s) => {
+                        // Ensure we extract the URL correctly from the Payload Media object
+                        const url =
+                          typeof s.image === "object" ? s.image?.url : "";
+                        return url ? <img key={s.id} src={url} alt="" /> : null;
+                      })}
+                    </div>
                     <div className="grid grid-cols-1 gap-x-16 gap-y-6 text-left md:grid-cols-2">
                       {currentCategory.services.map((service, index) => {
                         const isLeft = index % 2 === 0;

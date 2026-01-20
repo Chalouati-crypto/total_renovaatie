@@ -1,6 +1,5 @@
 "use client";
 import { useState, useMemo } from "react";
-import { useTranslations } from "next-intl";
 import { MasonryPhotoAlbum } from "react-photo-album";
 import Lightbox from "yet-another-react-lightbox";
 import { motion } from "framer-motion";
@@ -39,7 +38,6 @@ export default function PhotoGallery({
   locale: string;
   settings: SiteSetting;
 }) {
-  const t = useTranslations("Work");
   const [index, setIndex] = useState(-1);
   const [filter, setFilter] = useState(categories[0]?.slug ?? "structural");
 
@@ -103,7 +101,7 @@ export default function PhotoGallery({
             onClick={() => setIndex(0)}
             className="group flex items-center gap-2 rounded-full border border-slate-300 px-8 py-3 text-sm font-medium transition-all hover:bg-black hover:text-white"
           >
-            {t("viewAll")}
+            {settings.viewAllText}
             <span className="transition-transform group-hover:translate-x-1">
               →
             </span>

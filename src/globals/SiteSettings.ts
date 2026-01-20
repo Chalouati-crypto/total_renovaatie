@@ -38,6 +38,7 @@ export const SiteSettings: GlobalConfig = {
               type: "array",
               minRows: 6,
               maxRows: 6,
+
               fields: [
                 {
                   name: "image",
@@ -49,6 +50,7 @@ export const SiteSettings: GlobalConfig = {
                   name: "aspect",
                   type: "select",
                   defaultValue: "aspect-square",
+
                   options: [
                     { label: "Vertical (2/3)", value: "aspect-[2/3]" },
                     { label: "Portrait (3/4)", value: "aspect-[3/4]" },

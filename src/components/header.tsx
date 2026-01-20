@@ -2,17 +2,20 @@
 import React, { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import NavLink from "./nav-link";
-import { Link } from "~/i18n/routing";
 import { Button } from "./ui/button";
 import { Mail } from "lucide-react"; // Using Lucide for the "Turnkey" look
-import { useTranslations } from "next-intl";
 import LogoImage from "../../public/logo.png";
 import Whatsapp from "./icons/whatsapp";
 import LanguageSwitcher from "./language-switcher";
 import MobileMenu from "./mobile-menu";
 import Magnetic from "./magnetic";
+import Link from "next/link";
 
-export default function Header() {
+export default function Header({
+  labels,
+}: {
+  labels?: Record<string, string>;
+}) {
   const navItems = useMemo(
     () => ["home", "about", "services", "work", "contact"],
     [],
@@ -45,7 +48,6 @@ export default function Header() {
     };
   }, [navItems]); // The dependency array ensures this runs once
 
-  const t = useTranslations("Navbar");
   const [activeSection, setActiveSection] = useState("home");
 
   return (
@@ -66,7 +68,7 @@ export default function Header() {
           return (
             <Magnetic key={index}>
               <NavLink
-                section={t(item)}
+                section={labels[item] ?? item}
                 targetId={item}
                 isActive={activeSection === item}
               />
@@ -102,7 +104,7 @@ export default function Header() {
               className="hover:text-primary"
             >
               <Mail className="mr-2 h-4 w-4" />
-              {t("email_us")}
+              {labels.email_us}
             </a>
           </Button>
         </Magnetic>
@@ -110,7 +112,7 @@ export default function Header() {
       <div className="ml-4 hidden md:flex">
         <LanguageSwitcher />
       </div>
-      <MobileMenu navItems={navItems} />
+      <MobileMenu navItems={navItems} labels={labels} />
     </header>
   );
 }
