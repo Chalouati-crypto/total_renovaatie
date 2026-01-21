@@ -39,9 +39,8 @@ export default function PhotoGallery({
   settings: SiteSetting;
 }) {
   const [index, setIndex] = useState(-1);
-  const [filter, setFilter] = useState(categories[0]?.slug ?? "structural");
+  const [filter, setFilter] = useState(categories[0]?.slug);
 
-  // 1. Transform Payload data to Gallery format
   // 1. Transform Payload data to Gallery format
   const allPhotos = useMemo(() => {
     const mapped = workImages.map((img): GalleryPhoto => {
@@ -53,9 +52,6 @@ export default function PhotoGallery({
       const category = img.category as Category;
       const slug =
         typeof category === "object" ? category?.slug : "NO_SLUG_FOUND";
-
-      // Log one sample to see what's happening
-      console.log("Image:", img.id, "Slug:", slug);
 
       return {
         src: media?.url ?? "",
@@ -78,8 +74,14 @@ export default function PhotoGallery({
 
   // 3. Display only favorites in the grid, or a subset
   const gridPhotos = useMemo(() => {
-    // If filteredPhotos only has 1 item, slice(0, 15) will still show that 1 item.
-    return filteredPhotos.slice(0, 50);
+    if (filteredPhotos.length === 0) return [];
+
+    const favorites = filteredPhotos.filter((p) => p.isFavorite);
+    const nonFavorites = filteredPhotos.filter((p) => !p.isFavorite);
+
+    const combined = [...favorites, ...nonFavorites];
+
+    return combined.slice(0, 12); // Use 12 because it's divisible by 2, 3, and 4 (perfect for masonry)
   }, [filteredPhotos]);
 
   return (
@@ -88,10 +90,10 @@ export default function PhotoGallery({
         {/* HEADER SECTION - Matches Services Style */}
         <div className="mb-16 flex flex-col items-end text-right">
           <h2 className="text-6xl font-bold tracking-tight text-slate-900 md:text-8xl">
-            {settings.workTitle} {/* 👈 Changed */}
+            {settings.workTitle}
           </h2>
           <p className="mt-6 max-w-2xl text-lg text-slate-500 italic">
-            {settings.workDescription} {/* 👈 Changed */}
+            {settings.workDescription}
           </p>
         </div>
 

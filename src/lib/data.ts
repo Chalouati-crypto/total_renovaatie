@@ -1,6 +1,7 @@
 import { getPayload } from "payload";
 import configPromise from "~/payload.config";
-import type { Category, Service, WorkImage } from "~/payload-types";
+import type { WorkImage } from "~/payload-types";
+import { unstable_noStore as noStore } from "next/cache";
 /**
  * Fetches categories and maps services into them.
  */
@@ -69,7 +70,9 @@ export async function getAllWorkImages(): Promise<WorkImage[]> {
   const { docs } = await payload.find({
     collection: "work-images",
     depth: 2,
-    sort: "-isFavorite",
+    limit: 1000,
+    pagination: false,
+    sort: "-isFavorite, -createdAt",
   });
 
   return docs;

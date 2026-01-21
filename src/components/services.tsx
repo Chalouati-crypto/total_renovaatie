@@ -12,10 +12,10 @@ import {
 import * as LucideIcons from "lucide-react";
 import Image from "next/image";
 import type { SiteSetting } from "~/payload-types";
+import type { CategoryWithServices } from "~/server/db/types";
 
 export default function ServicesSection({
   data,
-  locale,
   settings,
 }: {
   data: CategoryWithServices[];
@@ -106,7 +106,7 @@ export default function ServicesSection({
               {isImageLoading && (
                 <div className="absolute inset-0 bg-slate-200">
                   <motion.div
-                    className="h-full w-full bg-gradient-to-r from-transparent via-white/50 to-transparent"
+                    className="h-full w-full bg-linear-to-r from-transparent via-white/50 to-transparent"
                     initial={{ x: "-100%" }}
                     animate={{ x: "100%" }}
                     transition={{
@@ -145,7 +145,6 @@ export default function ServicesSection({
               {settings.servicesDescription} {/* 👈 Changed */}{" "}
             </p>
           </div>
-
           {/* ACTIVE CONTENT */}
           <div className="flex flex-1 flex-col items-center justify-center text-center">
             <AnimatePresence mode="wait">
@@ -221,7 +220,7 @@ export default function ServicesSection({
                               {service.title}
                             </span>
                             <div
-                              className={`bg-primary absolute bottom-0 h-[2px] w-0 transition-all duration-500 group-hover:w-full ${
+                              className={`bg-primary absolute bottom-0 h-0.5 w-0 transition-all duration-500 group-hover:w-full ${
                                 isLeft
                                   ? "left-0"
                                   : "left-0 md:right-0 md:left-auto"
@@ -236,8 +235,6 @@ export default function ServicesSection({
               })()}
             </AnimatePresence>
           </div>
-
-          {/* PILL DOCK NAVIGATION */}
           {/* PILL DOCK NAVIGATION */}
           <div className="mx-auto mt-16 flex justify-center px-4">
             <div className="flex max-w-full flex-wrap items-center justify-center gap-3 rounded-[2.5rem] border border-black/5 bg-white/80 p-3 shadow-xl backdrop-blur-md md:flex-nowrap md:gap-2 md:rounded-full md:p-2">

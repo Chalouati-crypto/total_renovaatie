@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { getLocale } from "next-intl/server";
 import { getPayload } from "payload";
 import About from "~/components/about";
@@ -24,6 +25,7 @@ export default async function HomePage() {
     },
   });
   const images = await getAllWorkImages();
+  console.log("work images:", images);
   return (
     <>
       <Home initialData={siteSettings} />
