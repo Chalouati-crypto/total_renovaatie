@@ -98,38 +98,57 @@ export default function PhotoGallery({
         </div>
 
         {/* NAVIGATION DOCK - Matches Services Navigation */}
-        <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-          <button
-            onClick={() => setIndex(0)}
-            className="group flex items-center gap-2 rounded-full border border-slate-300 px-8 py-3 text-sm font-medium transition-all hover:bg-black hover:text-white"
-          >
-            {settings.viewAllText}
-            <span className="transition-transform group-hover:translate-x-1">
-              →
-            </span>
-          </button>
+        <div className="mb-12 flex flex-col gap-8">
+          {/* Header Section: View All and Category Scroll */}
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+            {/* 1. View All Button - Now clearly the primary action or starting point */}
+            <button
+              onClick={() => {
+                setIndex(0);
+                setFilter("all"); // Assuming 'all' resets your filter
+              }}
+              className="group flex w-fit items-center gap-2 rounded-full border border-slate-300 px-8 py-3 text-sm font-medium transition-all hover:bg-black hover:text-white"
+            >
+              {settings.viewAllText}
+              <span className="transition-transform group-hover:translate-x-1">
+                →
+              </span>
+            </button>
 
-          <div className="flex flex-wrap gap-2 rounded-full border border-black/5 bg-slate-50/50 p-1.5 backdrop-blur-sm">
-            {categories.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => setFilter(category.slug)}
-                className={`relative rounded-full px-6 py-2 text-sm font-medium transition-all ${
-                  filter === category.slug
-                    ? "text-white"
-                    : "text-slate-600 hover:text-black"
-                }`}
-              >
-                {filter === category.slug && (
-                  <motion.div
-                    layoutId="activeWorkTab"
-                    className="bg-primary absolute inset-0 rounded-full"
-                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                  />
-                )}
-                <span className="relative z-10">{category.name}</span>
-              </button>
-            ))}
+            {/* 2. Scrollable Categories Container */}
+            <div className="relative max-w-full">
+              <div className="no-scrollbar flex items-center gap-2 overflow-x-auto pb-2 transition-all md:pb-0">
+                <div className="flex gap-2 rounded-full border border-black/5 bg-slate-50/50 p-1.5 backdrop-blur-sm">
+                  {categories.map((category) => (
+                    <button
+                      key={category.id}
+                      onClick={() => setFilter(category.slug)}
+                      className={`relative shrink-0 rounded-full px-6 py-2 text-sm font-medium whitespace-nowrap transition-all ${
+                        filter === category.slug
+                          ? "text-white"
+                          : "text-slate-600 hover:text-black"
+                      }`}
+                    >
+                      {filter === category.slug && (
+                        <motion.div
+                          layoutId="activeWorkTab"
+                          className="bg-primary absolute inset-0 rounded-full"
+                          transition={{
+                            type: "spring",
+                            bounce: 0.2,
+                            duration: 0.6,
+                          }}
+                        />
+                      )}
+                      <span className="relative z-10">{category.name}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Mobile Fade Effect: Hints that there is more content to scroll */}
+              <div className="pointer-events-none absolute top-0 right-0 h-full w-12 bg-gradient-to-l from-white/50 to-transparent md:hidden" />
+            </div>
           </div>
         </div>
 

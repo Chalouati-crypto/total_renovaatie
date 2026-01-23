@@ -32,7 +32,7 @@ export default function Contact({
           <div className="flex flex-col items-center gap-4 sm:flex-row">
             {/* Email Button */}
             <Link
-              href="mailto:hello@yourcompany.com"
+              href="mailto:Info@comfort-home.pro"
               className="flex items-center gap-3 rounded-full bg-white px-8 py-4 font-medium text-[#43749B] transition-transform hover:scale-105 active:scale-95"
             >
               <Mail size={20} />

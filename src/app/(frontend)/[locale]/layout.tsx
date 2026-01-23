@@ -7,6 +7,7 @@ import { notFound } from "next/navigation";
 import { routing } from "~/i18n/routing";
 import { getPayload } from "payload";
 import configPromise from "~/payload.config";
+import TrustBanner from "~/components/trust-banner";
 export default async function RootLayout({
   children,
   params,
@@ -52,6 +53,7 @@ export default async function RootLayout({
       <body>
         {/* NextIntlClientProvider MUST wrap Header to fix your error */}
         <ReactLenis root>
+          <TrustBanner />
           <Header
             labels={{
               email_us: siteSettings.emailButtonText || "Email Us",

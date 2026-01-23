@@ -98,7 +98,7 @@ export default function MobileMenu({ navItems, labels }: MobileMenuProps) {
                   asChild
                   className="bg-primary justify-between rounded-2xl py-7 text-lg text-white"
                 >
-                  <a href="mailto:contact@example.com">
+                  <a href="mailto:Info@comfort-home.pro">
                     {labels.email_us}
                     <Mail size={20} />
                   </a>

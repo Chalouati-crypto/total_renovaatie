@@ -100,7 +100,7 @@ export default function Header({
             variant="outline"
           >
             <a
-              href="mailto:client@example.com?subject=Project Inquiry"
+              href="mailto:Info@comfort-home.pro?subject=Project Inquiry"
               className="hover:text-primary"
             >
               <Mail className="mr-2 h-4 w-4" />
