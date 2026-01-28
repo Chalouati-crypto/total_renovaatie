@@ -8,6 +8,16 @@ import { routing } from "~/i18n/routing";
 import { getPayload } from "payload";
 import configPromise from "~/payload.config";
 import TrustBanner from "~/components/trust-banner";
+import type { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Comfort Home | Bevatix bv — Algemene Renovatie",
+  description:
+    "Professionele renovatiewerken in Middelkerke. Van elektriciteit en sanitair tot volledige afwerking.",
+  icons: {
+    icon: "/logo.png",
+    apple: "/apple-touch-icon.png",
+  },
+};
 export default async function RootLayout({
   children,
   params,

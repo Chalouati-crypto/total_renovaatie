@@ -7,16 +7,14 @@ const intlMiddleware = createMiddleware(routing);
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // 1. DYNAMIC BYPASS LOGIC
-  // EXCLUDE ALL Payload API and Admin routes from i18n
+  // 1. IMPROVED BYPASS LOGIC
+  // We check for admin, api, _next, AND any path that contains a "." (file extension)
   if (
     pathname.startsWith("/admin") ||
-    pathname.startsWith("/api") || // This is good, catches all /api
+    pathname.startsWith("/api") ||
     pathname.includes("_next") ||
-    pathname === "/favicon.ico"
+    pathname.includes(".") // 👈 This catches logo.png, sitemap.xml, etc.
   ) {
-    // ✅ ADD LOGGING HERE TO CONFIRM IT'S WORKING
-    console.log(`[Middleware] Bypassing i18n for path: ${pathname}`);
     return NextResponse.next();
   }
 
@@ -24,11 +22,18 @@ export function middleware(request: NextRequest) {
   return intlMiddleware(request);
 }
 
-// 2. TIGHTEN THE MATCHER
 export const config = {
-  // We want to make sure the middleware doesn't even ATTEMPT
-  // to run on file uploads or API calls
+  // This matcher is the "standard" for next-intl.
+  // It ignores anything with a dot (files) and the internal folders.
   matcher: [
-    "/((?!api|admin|_next/static|_next/image|assets|favicon.ico|sw.js).*)",
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api (API routes)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * - Any path containing a dot (e.g. logo.png)
+     */
+    "/((?!api|_next/static|_next/image|admin|.*\\..*).*)",
   ],
 };
