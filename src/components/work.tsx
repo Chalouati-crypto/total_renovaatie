@@ -39,8 +39,33 @@ export default function PhotoGallery({
   locale: string;
   settings: SiteSetting;
 }) {
+  const preferredOrder = [
+    "demolition",
+    "renovation",
+    "interior",
+    "sanitary",
+    "electricity",
+    "joinery",
+    "finishing",
+  ];
+
+  const sortedCategories = useMemo(() => {
+    return [...categories].sort((a, b) => {
+      const indexA = preferredOrder.indexOf(a.slug.trim());
+      const indexB = preferredOrder.indexOf(b.slug.trim());
+
+      // If both aren't in the list, keep their relative order
+      if (indexA === -1 && indexB === -1) return 0;
+      // If one isn't in the list, push it to the end
+      if (indexA === -1) return 1;
+      if (indexB === -1) return -1;
+
+      return indexA - indexB;
+    });
+  }, [categories]);
+
   const [index, setIndex] = useState(-1);
-  const [filter, setFilter] = useState(categories[0]?.slug);
+  const [filter, setFilter] = useState(sortedCategories[0]?.slug);
 
   // 3. New State: Decide if Lightbox shows "filtered" list or "all" list
   const [lightboxMode, setLightboxMode] = useState<"filtered" | "all">(
@@ -126,7 +151,7 @@ export default function PhotoGallery({
             <div className="relative max-w-full">
               <div className="no-scrollbar flex items-center gap-2 overflow-x-auto pb-2 transition-all md:pb-0">
                 <div className="flex gap-2 rounded-full border border-black/5 bg-slate-50/50 p-1.5 backdrop-blur-sm">
-                  {categories.map((category) => (
+                  {sortedCategories.map((category) => (
                     <button
                       key={category.id}
                       onClick={() => setFilter(category.slug)}
