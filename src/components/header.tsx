@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import NavLink from "./nav-link";
 import { Button } from "./ui/button";
-import { Mail } from "lucide-react"; // Using Lucide for the "Turnkey" look
+import { Mail, Facebook, Instagram } from "lucide-react"; // Using Lucide for the "Turnkey" look
 import LogoImage from "../../public/logo.png";
 import Whatsapp from "./icons/whatsapp";
 import LanguageSwitcher from "./language-switcher";
@@ -63,7 +63,7 @@ export default function Header({
         />
       </Link>
 
-      <nav className="hidden flex-2 items-center justify-center gap-2 md:flex">
+      <nav className="hidden flex-2 items-center justify-center gap-1 md:flex lg:gap-2">
         {navItems.map((item, index) => {
           return (
             <Magnetic key={index}>
@@ -77,39 +77,66 @@ export default function Header({
         })}
       </nav>
 
-      <div className="hidden flex-1 items-center justify-end gap-2 lg:flex">
-        <Magnetic>
-          <Button
-            asChild
-            className="bg-secondary hover:text-secondary hover:border-secondary hover:bg-background rounded-full px-4 text-white shadow-none hover:border"
-          >
-            <a
-              href="https://wa.me/+32473260030?text=Hello, I am interested in your services."
-              target="_blank"
-              rel="noopener noreferrer"
+      <div className="hidden flex-1 items-center justify-end gap-1.5 md:flex">
+        <div className="flex items-center gap-1.5">
+          <Magnetic>
+            <Button
+              asChild
+              size="icon"
+              className="bg-[#25D366] hover:bg-[#25D366]/90 h-9 w-9 rounded-full text-white shadow-none border-none"
             >
-              <Whatsapp className="mr-2 h-24 w-24" />
-              +32 473 26 00 30
-            </a>
-          </Button>
-        </Magnetic>
-        <Magnetic>
-          <Button
-            className="bg-primary text-background border-primary rounded-full border-2 bg-none p-4 px-4 shadow-none"
-            asChild
-            variant="outline"
-          >
-            <a
-              href="mailto:Info@comfort-home.pro?subject=Project Inquiry"
-              className="hover:text-primary"
+              <a
+                href="https://wa.me/32473260030?text=Hello, I am interested in your services."
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Whatsapp className="h-5 w-5 fill-current" />
+              </a>
+            </Button>
+          </Magnetic>
+          <Magnetic>
+            <Button
+              asChild
+              size="icon"
+              className="bg-primary hover:bg-primary/90 h-9 w-9 rounded-full text-white shadow-none border-none"
             >
-              <Mail className="mr-2 h-4 w-4" />
-              {labels.email_us}
-            </a>
-          </Button>
-        </Magnetic>
-      </div>
-      <div className="ml-4 hidden md:flex">
+              <a href="mailto:Info@comfort-home.pro?subject=Project Inquiry">
+                <Mail className="h-5 w-5" />
+              </a>
+            </Button>
+          </Magnetic>
+          <Magnetic>
+            <Button
+              asChild
+              size="icon"
+              className="bg-[#1877F2] hover:bg-[#1877F2]/90 h-9 w-9 rounded-full text-white shadow-none border-none"
+            >
+              <a
+                href="https://facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Facebook className="h-5 w-5" />
+              </a>
+            </Button>
+          </Magnetic>
+          <Magnetic>
+            <Button
+              asChild
+              size="icon"
+              className="bg-[#E4405F] hover:bg-[#E4405F]/90 h-9 w-9 rounded-full text-white shadow-none border-none"
+            >
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Instagram className="h-5 w-5" />
+              </a>
+            </Button>
+          </Magnetic>
+        </div>
+        <div className="bg-primary/20 mx-1 h-6 w-px" />
         <LanguageSwitcher />
       </div>
       <MobileMenu navItems={navItems} labels={labels} />

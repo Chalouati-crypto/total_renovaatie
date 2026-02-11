@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 // 1. Remove Link from next-intl, use standard a tags for hash links
-import { Mail, X, Menu } from "lucide-react";
+import { Mail, X, Menu, Facebook, Instagram } from "lucide-react";
 import { Button } from "./ui/button";
 import Whatsapp from "./icons/whatsapp";
 import LanguageSwitcher from "./language-switcher";
@@ -96,7 +96,7 @@ export default function MobileMenu({ navItems, labels }: MobileMenuProps) {
               >
                 <Button
                   asChild
-                  className="bg-primary justify-between rounded-2xl py-7 text-lg text-white"
+                  className="bg-primary hover:bg-primary/90 justify-between rounded-2xl py-7 text-lg text-white shadow-none border-none"
                 >
                   <a href="mailto:Info@comfort-home.pro">
                     {labels.email_us}
@@ -106,12 +106,31 @@ export default function MobileMenu({ navItems, labels }: MobileMenuProps) {
 
                 <Button
                   asChild
-                  variant="outline"
-                  className="bg-secondary justify-between rounded-2xl border-2 border-white/20 py-7 text-lg text-white"
+                  className="bg-[#25D366] hover:bg-[#25D366]/90 justify-between rounded-2xl py-7 text-lg text-white shadow-none border-none"
                 >
-                  <a href="https://wa.me/32473260030">
+                  <a href="https://wa.me/32473260030" target="_blank">
                     {labels.whatsapp ?? "WhatsApp"}
                     <Whatsapp className="h-6 w-6 fill-current" />
+                  </a>
+                </Button>
+
+                <Button
+                  asChild
+                  className="bg-[#1877F2] hover:bg-[#1877F2]/90 justify-between rounded-2xl py-7 text-lg text-white shadow-none border-none"
+                >
+                  <a href="https://facebook.com" target="_blank">
+                    Facebook
+                    <Facebook size={20} />
+                  </a>
+                </Button>
+
+                <Button
+                  asChild
+                  className="bg-[#E4405F] hover:bg-[#E4405F]/90 justify-between rounded-2xl py-7 text-lg text-white shadow-none border-none"
+                >
+                  <a href="https://instagram.com" target="_blank">
+                    Instagram
+                    <Instagram size={20} />
                   </a>
                 </Button>
               </motion.div>

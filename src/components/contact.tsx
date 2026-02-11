@@ -7,6 +7,8 @@ import {
   Phone,
   Landmark,
   Hash,
+  Facebook,
+  Instagram,
 } from "lucide-react";
 import Link from "next/link";
 import { LegalModal } from "./legal-modal";
@@ -35,7 +37,7 @@ export default function Contact({
             {settings.contactSectionTitle}
           </motion.h2>
 
-          <div className="flex flex-col items-center gap-4 sm:flex-row">
+          <div className="flex flex-wrap items-center justify-center gap-4">
             {/* Email Button */}
             <Link
               href="mailto:Info@comfort-home.pro"
@@ -47,12 +49,32 @@ export default function Contact({
 
             {/* WhatsApp Button */}
             <Link
-              href="https://wa.me/32473200030?text=Hello, I am interested in your services."
+              href="https://wa.me/32473260030?text=Hello, I am interested in your services."
               target="_blank"
-              className="flex items-center gap-3 rounded-full bg-[#51B14E] px-8 py-4 font-medium text-white shadow-lg transition-transform hover:scale-105 active:scale-95"
+              className="flex items-center gap-3 rounded-full bg-[#25D366] px-8 py-4 font-medium text-white shadow-lg transition-transform hover:scale-105 active:scale-95"
             >
               <MessageCircle size={20} />
               {settings.whatsappButtonText}
+            </Link>
+
+            {/* Facebook Button */}
+            <Link
+              href="https://facebook.com"
+              target="_blank"
+              className="flex items-center gap-3 rounded-full bg-[#1877F2] px-8 py-4 font-medium text-white shadow-lg transition-transform hover:scale-105 active:scale-95"
+            >
+              <Facebook size={20} />
+              Facebook
+            </Link>
+
+            {/* Instagram Button */}
+            <Link
+              href="https://instagram.com"
+              target="_blank"
+              className="flex items-center gap-3 rounded-full bg-[#E4405F] px-8 py-4 font-medium text-white shadow-lg transition-transform hover:scale-105 active:scale-95"
+            >
+              <Instagram size={20} />
+              Instagram
             </Link>
           </div>
         </div>

@@ -10,12 +10,18 @@ import configPromise from "~/payload.config";
 import TrustBanner from "~/components/trust-banner";
 import type { Metadata } from "next";
 export const metadata: Metadata = {
-  title: "Comfort Home | Bevatix bv — Algemene Renovatie",
-  description:
-    "Professionele renovatiewerken in Middelkerke. Van elektriciteit en sanitair tot volledige afwerking.",
+  metadataBase: new URL("https://comfort-home.pro"),
+  title: {
+    default: "Comfort Home | Professional Services",
+    template: "%s | Comfort Home",
+  },
+  description: "Your premium Next.js site description",
   icons: {
-    icon: "/logo.png",
-    apple: "/apple-touch-icon.png",
+    icon: [
+      { url: "/favicon.ico" }, // Usually in /public/favicon.ico
+      { url: "/icon.png", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png" }],
   },
 };
 export default async function RootLayout({

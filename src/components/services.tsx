@@ -24,6 +24,7 @@ export default function ServicesSection({
 }) {
   const preferredOrder = [
     "demolition",
+    "renovation",
     "interior",
     "sanitary",
     "electricity",
